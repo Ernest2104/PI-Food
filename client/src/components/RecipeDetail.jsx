@@ -3,6 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { getRecipeDetail } from '../actions';
 import styled from 'styled-components';
+import loading from '../Images/cartoon-eat.gif'
 
 const Body = styled.div`
   background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
@@ -84,7 +85,7 @@ export default function RecipeDetail() {
                 <Cont2>
                   <h1>{myRecipeDetail[0].title}</h1>
                   <h3>{typeof myRecipeDetail[0].diets[0] === 'object' ? (myRecipeDetail[0].diets.map(d => d.name)).toString().replace(/,/g," - ") : (myRecipeDetail[0].diets.map(d => d)).toString().replace(/,/g," - ")}</h3>
-                  <h3>Tipos de Plato: {myRecipeDetail[0].createInDb ? null : (myRecipeDetail[0].dishtypes.map(d => d)).toString().replace(/,/g," - ")}</h3>
+                  {myRecipeDetail[0].dishtypes && <h3>Tipos de Plato: {myRecipeDetail[0].createInDb ? null : (myRecipeDetail[0].dishtypes.map(d => d)).toString().replace(/,/g," - ")}</h3>}
                 </Cont2>
                 <Cont1>
                   <h4><b><u>Resumen:</u></b> {myRecipeDetail[0].summary.replace(/<[^>]+>/g, '')}</h4>
@@ -95,9 +96,9 @@ export default function RecipeDetail() {
                 <Link to='/home'>
                   <button>Home</button>
                 </Link>
-            </Body> : <p>loading...</p>
+            </Body> : <img src={loading} style={{height:300, position: 'relative', top: '200px'}} alt="loading..." />
+
         }
-            
     </>
   )
 }

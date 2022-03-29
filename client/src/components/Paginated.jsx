@@ -11,6 +11,13 @@ const Paginado = styled.ul`
     margin-top: -10px;
     cursor: pointer;
     font-weight: lighter;
+    span {
+      position: relative;
+      left: -200px;
+      padding: 7px;
+      border: 2px solid salmon;
+      font-weight: bold;
+    }
     li {
         display: inline-block;
         border: 1.5px solid black;
@@ -26,7 +33,7 @@ const Paginado = styled.ul`
         background:salmon;
       }
 `
-const Paginated = ({ recipesPerPage, totalRecipes, pageNumber }) => {
+const Paginated = ({ recipesPerPage, totalRecipes, pageNumber, handlePrevBtn, handleNextBtn, currentPage }) => {
 
   const pageNumbers = [];
   
@@ -37,12 +44,15 @@ const Paginated = ({ recipesPerPage, totalRecipes, pageNumber }) => {
   return (
     <Nav>
         <Paginado>
+            <span>Página: {currentPage} de {pageNumbers.length}</span>
+          	<li onClick={handlePrevBtn}>Ant</li>
             {pageNumber && pageNumbers.map(number => {
                 return (
                     <li key={number} onClick={() => pageNumber(number)}>{number}</li>
                 )
             })
             }
+            <li onClick={handleNextBtn}>Sig</li>
         </Paginado>
     </Nav>
   )

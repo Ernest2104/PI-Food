@@ -1,17 +1,29 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getRecipeName } from '../actions';
+//import { getRecipeName } from '../actions';
+import { searchByName } from '../actions/index'
 import styled from 'styled-components';
 
 const Bar = styled.div`
   margin-top: -30px;
-  input {
+  input[type='search'] {
     background: transparent;
     border: 1px solid whitesmoke;
     letter-spacing: 1px;
     width: 15%;
     padding: 0.4rem;
     color: whitesmoke;
+    //position: relative;
+  }
+  label {
+    background: transparent;
+    letter-spacing: 1px;
+    color: crimson;
+    font-size: larger;
+    font-weight: bold;
+    position: absolute;
+    left: 480px;
+    
   }
   button {
     color:whitesmoke;
@@ -36,22 +48,27 @@ export default function SearchBar() {
 
   const handleInputChange = (e) => {
     e.preventDefault();
+    document.getElementById('message').hidden = true;
     setName(e.target.value);
   }
   
   const handleSubmit = (e) => {
       e.preventDefault()
       if (name !== ''){
-        dispatch(getRecipeName(name));
+        //document.getElementById('message').hidden = true;
+        //document.getElementById('message').value = ''
+        dispatch(searchByName(name));
         setName('')
       } else {
-        alert('Debe ingresar un nombre!!');
+        document.getElementById('message').hidden = false;
+        document.getElementById('message').innerText = '¡Debe ingresar un nombre!'
         document.getElementById('inputName').focus();
       }
   }
 
   return (
     <Bar>
+        <label id='message' hidden />
         <input id='inputName' type='search' onChange={handleInputChange} value={name}/>
         <button type='submit' onClick={handleSubmit}>Buscar</button>
     </Bar>

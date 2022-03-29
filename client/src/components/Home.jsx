@@ -6,13 +6,16 @@ import RecipeCard from '../components/RecipeCard';
 import SearchBar from './SearchBar';
 import Paginated from './Paginated';
 import styled from 'styled-components';
+import loading from '../Images/cartoon-eat.gif'
 
 const Body = styled.div`
   background: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%);
+  height: 100vh;
 `
 const Menu = styled.div`
   float: left;
   //position: fixed;
+  margin-top: 15px;
   margin-left: 5px;
   min-height: 75vh;
   padding-top: 5px;
@@ -92,7 +95,6 @@ const Filter = styled.div`
     //position: static;
     padding: 10px;
     margin: 10px;
-    
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     border-radius: 10px;
@@ -148,6 +150,17 @@ export default function Home() {
     setCurrentPage(1);
   }
 
+  const handlePrevBtn = () => {
+    if (currentPage !== 1)
+    setCurrentPage(currentPage - 1)
+  }
+
+  const handleNextBtn = () => {
+    if (currentPage !== Math.ceil(allRecipes.length / recipesPerPage)) {
+        setCurrentPage(currentPage + 1)
+    }
+  }
+
   const filterDiet = (e) => {
     e.preventDefault();
     dispatch(filterByDiet(e.target.value));
@@ -158,6 +171,20 @@ export default function Home() {
     e.preventDefault();
     dispatch(filterByCreated(e.target.value));
     setCurrentPage(1);
+  }
+
+  const reset = () => {
+    document.getElementById('asc_title').checked = false
+    document.getElementById('desc_title').checked = false
+    document.getElementById('asc_score').checked = false
+    document.getElementById('desc_score').checked = false
+    document.getElementById('selectCreated').value = 'all'
+    document.getElementById('selectDiets').value = 'All'
+  }
+  
+  const resetOrderingsFilters = () => {
+    reset();
+    dispatch(getRecipes());
   }
 
   const handleSort = (e) => {
@@ -176,16 +203,16 @@ export default function Home() {
         <Filter>
         <fieldset>
         <legend>Origen:</legend>
-          <select onChange={e => filterCreate(e)}>
+          <select id='selectCreated' onChange={e => filterCreate(e)}>
             <option value='all'>Todos</option>
             <option value='api'>Api</option>
-            <option value='create'>Base de Datos</option>
+            <option value='created'>Base de Datos</option>
           </select>
         </fieldset>
 
         <fieldset>
         <legend>Dietas:</legend>
-          <select onChange={e => filterDiet(e)}>
+          <select id='selectDiets' onChange={e => filterDiet(e)}>
             {
               allDiets && allDiets.map(d => {
                 return (
@@ -202,44 +229,32 @@ export default function Home() {
         <fieldset onChange={(e) => handleSort(e)}>
             <legend>Nombre</legend>
             <label>
-                <input id='asc_title' type='radio' value='asc_title' name='title'/>A-Z
+                <input id='asc_title' type='radio' value='asc_title' name='order'/>A-Z
             </label>
             <label>
-                <input id='desc_title' type='radio' value='desc_title' name='title'/>Z-A
+                <input id='desc_title' type='radio' value='desc_title' name='order'/>Z-A
             </label>
         </fieldset>
         <fieldset onChange={(e) => handleSort(e)}>
             <legend>Puntaje</legend>
             <label>
-                <input id='asc_score' type='radio' value='asc_score' name='score'/>Menor a Mayor
+                <input id='asc_score' type='radio' value='asc_score' name='order'/>Menor a Mayor
             </label>
             <label>
-                <input id='desc_score' type='radio' value='desc_score' name='score'/>Mayor a Menor
+                <input id='desc_score' type='radio' value='desc_score' name='order'/>Mayor a Menor
             </label>
         </fieldset>
         </Order>
-
-        {/* <select onChange={e => sort(e)}>
-          <optgroup label="Nombre">
-            <option value="asc_title">A-Z</option>
-            <option value="desc_title">Z-A</option>
-          </optgroup>
-          <optgroup label="Puntuación">
-            <option value="asc_score">Menor a Mayor</option>
-            <option value="desc_score">Mayor a Menor</option>
-          </optgroup>
-        </select>*/}
       
-        
         <MenuButton>
           <Link to='/recipes'><button>Crear Receta</button></Link><br/>
           <button onClick={e => handleClick(e)}>Cargar Todas</button><br/>
-          <button>Limpiar Filtros</button>
+          <button onClick={resetOrderingsFilters}>Limpiar Filtros</button>
         </MenuButton>
 
         </Menu>
         
-        <Paginated recipesPerPage={recipesPerPage} totalRecipes={allRecipes.length} pageNumber={pages} />
+        <Paginated recipesPerPage={recipesPerPage} totalRecipes={allRecipes.length} pageNumber={pages} handlePrevBtn={handlePrevBtn} handleNextBtn={handleNextBtn} currentPage={currentPage}/>
         <>
         {
           currentRecipes.length > 0 ? currentRecipes.map(r => {
@@ -255,7 +270,7 @@ export default function Home() {
                 </Link>
               </>
             )
-          }) : <p>"loading..."</p>
+          }) : <img src={loading} style={{height:300, position: 'relative', top: '200px'}} alt="loading..." />
         }
         </>
     </Body>

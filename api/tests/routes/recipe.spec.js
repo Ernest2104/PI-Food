@@ -6,7 +6,8 @@ const { Recipe, conn } = require('../../src/db.js');
 
 const agent = session(app);
 const recipe = {
-  name: 'Milanea a la napolitana',
+  title: 'Milanesa a la napolitana',
+  summary: 'La milanesa a la napolitana es un plato típico de la gastronomía rioplatense propia de Argentina'
 };
 
 describe('Recipe routes', () => {
@@ -19,6 +20,9 @@ describe('Recipe routes', () => {
   describe('GET /recipes', () => {
     it('should get 200', () =>
       agent.get('/recipes').expect(200)
+    );
+    it('should get 404', () =>
+      agent.get('/recipe').expect(404)
     );
   });
 });

@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Body = styled.body`
-    margin: 5px 15px;
+    margin: 5px 30px;
     padding: 0px;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    display: inline-block;
+    float: left;
     img {
       width: 250px;
       margin-bottom: 0px;

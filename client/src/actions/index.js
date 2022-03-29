@@ -8,6 +8,7 @@ export const FILTER_BY_DIET = 'FILTER_BY_DIET';
 export const FILTER_BY_CREATED = 'FILTER_BY_CREATED';
 export const ORDER = 'ORDER';
 export const CREATE_RECIPE = 'CREATE_RECIPE';
+export const SEARCH_BY_NAME = 'SEARCH_BY_NAME';
 
 export const getRecipes = () => {
     return async (dispatch) => {
@@ -44,7 +45,9 @@ export const getRecipeName = (name) => {
                 payload: recipe.data
             })
         }catch(error) {
-            alert('No encontrado!!');
+            //alert('Receta no encontrada!!');
+            document.getElementById('message').hidden = false;
+            document.getElementById('message').innerText = '¡No se encontró la receta!'
             document.getElementById('inputName').focus();
         }
     }
@@ -76,19 +79,27 @@ export const filterByDiet = (payload) => {
         type: 'FILTER_BY_DIET',
         payload
     }
-}
+};
 
 export const filterByCreated = (payload) => {
     return {
         type: 'FILTER_BY_CREATED',
         payload
     }
-}
+};
 
-export const order = (payload => {
+export const order = (payload) => {
     return {
         type: 'ORDER',
         payload
     }
-})
+};
 
+//------------------------------------------
+
+export const searchByName = (payload) => {
+    return {
+        type: 'SEARCH_BY_NAME',
+        payload
+    }
+}
